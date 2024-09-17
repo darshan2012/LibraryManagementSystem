@@ -9,18 +9,15 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
 public class BorrowerView {
-    private BorrowerService borrowerService;
+
     private BufferedReader inStream;
     private PrintWriter outStream;
     private BufferedReader inputReader;
-    private Borrower borrower;
 
     public BorrowerView(Borrower borrower, PrintWriter outStream, BufferedReader inStream, BufferedReader inputReader) {
-        this.borrower = borrower;
         this.inStream = inStream;
         this.outStream = outStream;
         this.inputReader = inputReader;
-        this.borrowerService = new BorrowerService(borrower);
     }
 
     private void choices() {
