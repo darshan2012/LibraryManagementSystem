@@ -53,8 +53,8 @@
                             Method method = Book.class.getMethod("get" + searchKey.substring(0, 1).toUpperCase() + searchKey.substring(1));
                             String fieldValue = (String) method.invoke(book);
                             return fieldValue != null && fieldValue.toLowerCase().contains(val.toLowerCase());
-                        } catch (Exception e) {
-                            throw new RuntimeException(e.getMessage());
+                        } catch (Exception exception) {
+                            throw new RuntimeException(exception.getMessage());
                         }
                     })
                     .collect(Collectors.toList());

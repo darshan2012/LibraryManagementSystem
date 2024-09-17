@@ -10,13 +10,13 @@ import java.io.PrintWriter;
 
 public class BorrowerView {
 
-    private BufferedReader inStream;
-    private PrintWriter outStream;
+    private BufferedReader inputStream;
+    private PrintWriter outputStream;
     private BufferedReader inputReader;
 
-    public BorrowerView(Borrower borrower, PrintWriter outStream, BufferedReader inStream, BufferedReader inputReader) {
-        this.inStream = inStream;
-        this.outStream = outStream;
+    public BorrowerView(Borrower borrower, PrintWriter outputStream, BufferedReader inputStream, BufferedReader inputReader) {
+        this.inputStream = inputStream;
+        this.outputStream = outputStream;
         this.inputReader = inputReader;
     }
 
@@ -36,7 +36,7 @@ public class BorrowerView {
             do {
                 choices();
                 choice = Integer.parseInt(inputReader.readLine());
-                outStream.println(choice);
+                outputStream.println(choice);
                 switch (choice) {
                     case 1 -> issueBook();
                     case 2 -> returnBook();
@@ -47,16 +47,16 @@ public class BorrowerView {
                     default -> System.out.println("\nInvalid Operation");
                 }
             } while (choice != 0);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
     }
 
     private void issueBook() throws IOException {
         System.out.print("Enter ISBN: ");
         String ISBN = inputReader.readLine();
-        outStream.println(ISBN);
-        String response = inStream.readLine();
+        outputStream.println(ISBN);
+        String response = inputStream.readLine();
         System.out.println(response);
 
     }
@@ -64,8 +64,8 @@ public class BorrowerView {
     private void returnBook() throws IOException {
         System.out.print("Enter ISBN: ");
         String ISBN = inputReader.readLine();
-        outStream.println(ISBN);
-        String response = inStream.readLine();
+        outputStream.println(ISBN);
+        String response = inputStream.readLine();
         System.out.println(response);
 
     }
@@ -83,7 +83,7 @@ public class BorrowerView {
         try {
                 searchOptions();
                 choice = Integer.parseInt(inputReader.readLine());
-                outStream.println(choice);
+                outputStream.println(choice);
                 switch (choice) {
                     case 1 -> searchBookByName();
                     case 2 -> searchBookByAuthor();
@@ -92,30 +92,30 @@ public class BorrowerView {
                     case 0 -> System.out.println("\nExiting search...");
                     default -> System.err.println("\nInvalid Operation");
                 }
-        } catch (Exception e) {
-            System.out.println("Something went wrong..." + e.getMessage());
+        } catch (Exception exception) {
+            System.out.println("Something went wrong..." + exception.getMessage());
         }
     }
 
     private void searchBookByName() throws IOException {
         System.out.print("Enter book name: ");
         String name = inputReader.readLine();
-        outStream.println(name);
+        outputStream.println(name);
         displayBooks();
     }
 
     private void searchBookByAuthor() throws IOException {
         System.out.print("Enter author name: ");
         String author = inputReader.readLine();
-        outStream.println(author);
+        outputStream.println(author);
         displayBooks();
     }
 
     private void searchBookByISBN() throws IOException {
         System.out.print("Enter ISBN: ");
         String ISBN = inputReader.readLine();
-        outStream.println(ISBN);
-        String book = inStream.readLine();
+        outputStream.println(ISBN);
+        String book = inputStream.readLine();
         if (!book.equals("end")) {
             System.out.println(book);
         } else {
@@ -126,20 +126,20 @@ public class BorrowerView {
     private void searchBookByGenre() throws IOException {
         System.out.print("Enter genre: ");
         String genre = inputReader.readLine();
-        outStream.println(genre);
+        outputStream.println(genre);
         displayBooks();
     }
 
     private void displayBooks() throws IOException {
         String book;
-        while (!(book = inStream.readLine()).equals("end")) {
+        while (!(book = inputStream.readLine()).equals("end")) {
             System.out.println(book);
         }
     }
 
     private void viewBooks() throws IOException {
         String book;
-        while (!(book = inStream.readLine()).equals("end")) {
+        while (!(book = inputStream.readLine()).equals("end")) {
             System.out.println(book);
         }
 
@@ -147,7 +147,7 @@ public class BorrowerView {
 
     private void getBorrowedBooks() throws IOException {
         String book;
-        while (!(book = inStream.readLine()).equals("end")) {
+        while (!(book = inputStream.readLine()).equals("end")) {
             System.out.println(book);
         }
 

@@ -12,11 +12,11 @@ public abstract class  LibUserService {
         return Books.getAllBooks();
     }
 
-    public List<Book> searchBooksByName(String name){
+    public List<Book> getBooksByName(String name){
         return Books.searchBook("name",name);
     }
 
-    public List<Book> searchBooksByAuthor(String author){
+    public List<Book> getBooksByAuthor(String author){
         return Books.searchBook("author",author);
     }
 

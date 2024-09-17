@@ -32,9 +32,11 @@ public class Book {
     public Boolean getIsAvailable(){
         return isAvailable;
     }
+
     public void setIsAvailable(Boolean isAvailable){
         this.isAvailable = isAvailable;
     }
+
     public String getName() {
         return name;
     }

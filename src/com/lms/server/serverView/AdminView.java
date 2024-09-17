@@ -11,12 +11,12 @@ import java.util.List;
 
 public class AdminView {
     private AdminService adminService;
-    private BufferedReader inStream;
-    private PrintWriter outStream;
+    private BufferedReader inputStream;
+    private PrintWriter outputStream;
 
-    public AdminView(PrintWriter outStream, BufferedReader inStream) {
-        this.inStream = inStream;
-        this.outStream = outStream;
+    public AdminView(PrintWriter outputStream, BufferedReader inputStream) {
+        this.inputStream = inputStream;
+        this.outputStream = outputStream;
         this.adminService = new AdminService();
     }
 
@@ -26,92 +26,92 @@ public class AdminView {
         try {
             int choice = -1;
             do {
-                choice = Integer.parseInt(inStream.readLine());
+                choice = Integer.parseInt(inputStream.readLine());
 
                 switch (choice) {
                     case 1 -> addBook();
                     case 2 -> removeBook();
                     case 3 -> searchBook();
                     case 4 -> viewBooks();
-                    case 0 -> outStream.println("\nExiting...");
-                    default -> outStream.println("\nInvalid Operation");
+                    case 0 -> outputStream.println("\nExiting...");
+                    default -> outputStream.println("\nInvalid Operation");
                 }
             } while (choice != 0);
-        }catch (SocketException e) {
-            throw e;
-        } catch (Exception e) {
-            e.printStackTrace();
+        }catch (SocketException exception) {
+            throw exception;
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
     }
 
     private void addBook() throws IOException {
         try {
-            String ISBN = inStream.readLine();
+            String ISBN = inputStream.readLine();
 
-            String name = inStream.readLine();
+            String name = inputStream.readLine();
 
-            String author = inStream.readLine();
+            String author = inputStream.readLine();
 
-            String genre = inStream.readLine();
+            String genre = inputStream.readLine();
 
             Book book = new Book(ISBN, name, author, genre);
             adminService.addBook(book);
-            outStream.println("Book added Successfully!");
-        } catch (Exception e) {
-            outStream.println(e.getMessage());
+            outputStream.println("Book added Successfully!");
+        } catch (Exception exception) {
+            outputStream.println(exception.getMessage());
         }
 
     }
 
     private void removeBook() throws IOException {
         try {
-            String ISBN = inStream.readLine();
+            String ISBN = inputStream.readLine();
             adminService.removeBook(ISBN);
-            outStream.println("Book removed Successfully!");
-        } catch (Exception e) {
-            outStream.println(e.getMessage());
+            outputStream.println("Book removed Successfully!");
+        } catch (Exception exception) {
+            outputStream.println(exception.getMessage());
         }
 
     }
 
     private void searchBook() throws IOException {
 
-        int searchChoice = Integer.parseInt(inStream.readLine());
+        int searchChoice = Integer.parseInt(inputStream.readLine());
 
         switch (searchChoice) {
-            case 1 -> handleSearchBookByName();
-            case 2 -> handleSearchBookByAuthor();
-            case 3 -> handleSearchBookByISBN();
-            case 4 -> handleSearchBookByGenre();
-            default -> outStream.println("Invalid search option");
+            case 1 -> getBookByName();
+            case 2 -> getBookByAuthor();
+            case 3 -> getBookByISBN();
+            case 4 -> getBookByGenre();
+            default -> outputStream.println("Invalid search option");
         }
     }
 
-    private void handleSearchBookByName() throws IOException {
-        String name = inStream.readLine();
-        List<Book> books = adminService.searchBooksByName(name);
+    private void getBookByName() throws IOException {
+        String name = inputStream.readLine();
+        List<Book> books = adminService.getBooksByName(name);
         sendBooks(books);
     }
 
-    private void handleSearchBookByAuthor() throws IOException {
-        String author = inStream.readLine();
-        List<Book> books = adminService.searchBooksByAuthor(author);
+    private void getBookByAuthor() throws IOException {
+        String author = inputStream.readLine();
+        List<Book> books = adminService.getBooksByAuthor(author);
         sendBooks(books);
     }
 
-    private void handleSearchBookByISBN() throws IOException {
-        String ISBN = inStream.readLine();
+    private void getBookByISBN() throws IOException {
+        String ISBN = inputStream.readLine();
         Book book = adminService.getBookByISBN(ISBN);
         if (book != null) {
-            outStream.println(book);
+            outputStream.println(book);
         } else {
-            outStream.println("Book not found with ISBN: " + ISBN);
+            outputStream.println("Book not found with ISBN: " + ISBN);
         }
-        outStream.println("end");
+        outputStream.println("end");
     }
 
-    private void handleSearchBookByGenre() throws IOException {
-        String genre = inStream.readLine();
+    private void getBookByGenre() throws IOException {
+        String genre = inputStream.readLine();
         List<Book> books = adminService.getBooksByGenre(genre);
         sendBooks(books);
     }
@@ -119,23 +119,23 @@ public class AdminView {
     private void sendBooks(List<Book> books) {
         if (books != null && !books.isEmpty()) {
             for (Book book : books) {
-                outStream.println(book);
+                outputStream.println(book);
             }
         } else {
-            outStream.println("No books found.");
+            outputStream.println("No books found.");
         }
-        outStream.println("end");
+        outputStream.println("end");
     }
 
     private void viewBooks() {
         List<Book> books = adminService.getAllBooks();
         if (books.isEmpty()) {
-            outStream.println("No books available.");
+            outputStream.println("No books available.");
         } else {
             for (Book book : books) {
-                outStream.println(book);
+                outputStream.println(book);
             }
         }
-        outStream.println("end");
+        outputStream.println("end");
     }
 }

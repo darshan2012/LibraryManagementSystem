@@ -5,13 +5,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 public class AdminView {
-    private PrintWriter outStream;
-    private BufferedReader inStream;
+    private PrintWriter outputStream;
+    private BufferedReader inputStream;
     private BufferedReader inputReader;
 
-    public AdminView(BufferedReader inStream, PrintWriter outStream,BufferedReader inputReader) {
-        this.inStream = inStream;
-        this.outStream = outStream;
+    public AdminView(BufferedReader inputStream, PrintWriter outputStream,BufferedReader inputReader) {
+        this.inputStream = inputStream;
+        this.outputStream = outputStream;
         this.inputReader = inputReader;
     }
 
@@ -26,7 +26,7 @@ public class AdminView {
             do {
                 choices();
                 choice = Integer.parseInt(inputReader.readLine());
-                outStream.println(choice);
+                outputStream.println(choice);
                 switch (choice) {
                     case 1 -> addBook();
                     case 2 -> removeBook();
@@ -36,9 +36,8 @@ public class AdminView {
                     default -> System.err.println("\nInvalid Operation");
                 }
             } while (choice != 0);
-        } catch (Exception e) {
-            System.err.println("Something went wrong...");
-            e.printStackTrace();
+        } catch (Exception exception) {
+            System.err.println("Something went wrong... " + exception.getMessage());
         }
     }
 
@@ -53,15 +52,16 @@ public class AdminView {
             System.out.print("Enter Genre: ");
             String genre = inputReader.readLine();
 
-            outStream.println(ISBN);
-            outStream.println(name);
-            outStream.println(author);
-            outStream.println(genre);
+            outputStream.println(ISBN);
+            outputStream.println(name);
+            outputStream.println(author);
+            outputStream.println(genre);
 
-            String response = inStream.readLine();
+            String response = inputStream.readLine();
             System.out.println(response);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ioException) {
+            System.out.println(ioException.getMessage());
+            //            ioException.printStackTrace();
         }
     }
 
@@ -70,12 +70,12 @@ public class AdminView {
             System.out.print("Enter ISBN: ");
             String ISBN = inputReader.readLine();
 
-            outStream.println(ISBN);
+            outputStream.println(ISBN);
 
-            String response = inStream.readLine();
+            String response = inputStream.readLine();
             System.out.println(response);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException exception) {
+            exception.printStackTrace();
         }
     }
 
@@ -84,7 +84,7 @@ public class AdminView {
             System.out.println("\n1. Search by Name\n2. Search by Author\n3. Search by ISBN\n4. Search by Genre\n0. Exit");
             System.out.print("Enter your choice: ");
             int choice = Integer.parseInt(inputReader.readLine());
-            outStream.println(choice);
+            outputStream.println(choice);
             switch (choice) {
                 case 1 -> searchByName();
                 case 2 -> searchByAuthor();
@@ -93,8 +93,8 @@ public class AdminView {
                 case 0 -> System.out.println("\nExiting search...");
                 default -> System.err.println("\nInvalid Operation");
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
     }
 
@@ -102,10 +102,10 @@ public class AdminView {
         System.out.print("Enter book name: ");
         String name = inputReader.readLine();
 
-        outStream.println(name);
+        outputStream.println(name);
 
         String response;
-        while (!(response = inStream.readLine()).equals("end")) {
+        while (!(response = inputStream.readLine()).equals("end")) {
             System.out.println(response);
         }
     }
@@ -114,10 +114,10 @@ public class AdminView {
         System.out.print("Enter author name: ");
         String author = inputReader.readLine();
 
-        outStream.println(author);
+        outputStream.println(author);
 
         String response;
-        while (!(response = inStream.readLine()).equals("end")) {
+        while (!(response = inputStream.readLine()).equals("end")) {
             System.out.println(response);
         }
     }
@@ -126,18 +126,18 @@ public class AdminView {
         System.out.print("Enter ISBN: ");
         String ISBN = inputReader.readLine();
 
-        outStream.println(ISBN);
+        outputStream.println(ISBN);
 
-        String response = inStream.readLine();
+        String response = inputStream.readLine();
         System.out.println(response);
     }
 
     private void searchByGenre() throws IOException {
         System.out.print("Enter genre: ");
         String genre = inputReader.readLine();
-        outStream.println(genre);
+        outputStream.println(genre);
         String response;
-        while (!(response = inStream.readLine()).equals("end")) {
+        while (!(response = inputStream.readLine()).equals("end")) {
             System.out.println(response);
         }
     }
@@ -145,11 +145,11 @@ public class AdminView {
     private void viewBooks() {
         try {
             String response;
-            while (!(response = inStream.readLine()).equals("end")) {
+            while (!(response = inputStream.readLine()).equals("end")) {
                 System.out.println(response);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException exception) {
+            exception.printStackTrace();
         }
     }
 }

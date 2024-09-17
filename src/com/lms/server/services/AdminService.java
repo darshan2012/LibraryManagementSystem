@@ -8,6 +8,7 @@ import com.lms.server.models.Book;
 import com.lms.server.models.User;
 
 public class AdminService extends LibUserService {
+
     public static void addBook(Book book) {
         if (!Books.checkIfISBNExist(book.getISBN())) {
             Books.addBook(book.getISBN(), book.getName(), book.getAuthor(), book.getGenre());

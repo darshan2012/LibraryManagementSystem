@@ -15,9 +15,11 @@ public class Borrowers {
     public static Borrower getBorrowerById(String username){
         return borrowers.get(username);
     }
+
     public static Borrower getBorrowerByusername(String username){
         return borrowers.get(username);
     }
+
     public static Map<String, Borrower> getUsers() {
         return borrowers;
     }

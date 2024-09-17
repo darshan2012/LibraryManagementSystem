@@ -13,24 +13,23 @@ import java.util.List;
 
 public class BorrowerView {
     private BorrowerService borrowerService;
-    private BufferedReader inStream;
-    private PrintWriter outStream;
+    private BufferedReader inputStream;
+    private PrintWriter outputStream;
     private Borrower borrower;
 
-    public BorrowerView(Borrower borrower, PrintWriter outStream, BufferedReader inStream) {
+    public BorrowerView(Borrower borrower, PrintWriter outputStream, BufferedReader inputStream) {
         this.borrower = borrower;
-        this.inStream = inStream;
-        this.outStream = outStream;
+        this.inputStream = inputStream;
+        this.outputStream = outputStream;
         this.borrowerService = new BorrowerService(borrower);
     }
-    
 
     public void operations() throws SocketException {
         try {
             int choice = -1;
             do {
 
-                choice = Integer.parseInt(inStream.readLine());
+                choice = Integer.parseInt(inputStream.readLine());
                 switch (choice) {
                     case 1 -> issueBook();
                     case 2 -> returnBook();
@@ -39,77 +38,77 @@ public class BorrowerView {
                     case 5 -> getBorrowedBooks();
                 }
             } while (choice != 0);
-        } catch (SocketException e) {
-            throw e;
-        } catch (Exception e) {
-            outStream.println("An error occurred: " + e.getMessage());
+        } catch (SocketException exception) {
+            throw exception;
+        } catch (Exception exception) {
+            outputStream.println("An error occurred: " + exception.getMessage());
         }
     }
 
     private void issueBook() throws IOException {
-        String ISBN = inStream.readLine();
+        String ISBN = inputStream.readLine();
         try {
             if (borrowerService.issueBook(ISBN)) {
-                outStream.println("Book Issued Successfully!");
+                outputStream.println("Book Issued Successfully!");
             } else {
-                outStream.println("Could not issue Book. It might be unavailable or already borrowed.");
+                outputStream.println("Could not issue Book. It might be unavailable or already borrowed.");
             }
-        } catch (Exception e) {
-            outStream.println("Error issuing book: " + e.getMessage());
+        } catch (Exception exception) {
+            outputStream.println("Error issuing book: " + exception.getMessage());
         }
     }
 
     private void returnBook() throws IOException {
 
-        String ISBN = inStream.readLine();
+        String ISBN = inputStream.readLine();
         try {
             long penalty = borrowerService.returnBook(ISBN);
-            outStream.println("Book returned Successfully!");
+            outputStream.println("Book returned Successfully!");
             if (penalty > 0) {
-                outStream.println("You have a penalty of: " + penalty + " for late return.");
+                outputStream.println("You have a penalty of: " + penalty + " for late return.");
             }
-        } catch (Exception e) {
-            outStream.println("Error returning book: " + e.getMessage());
+        } catch (Exception exception) {
+            outputStream.println("Error returning book: " + exception.getMessage());
         }
     }
 
     private void searchBook() throws IOException {
 
-        int searchChoice = Integer.parseInt(inStream.readLine());
+        int searchChoice = Integer.parseInt(inputStream.readLine());
 
         switch (searchChoice) {
-            case 1 -> handleSearchBookByName();
-            case 2 -> handleSearchBookByAuthor();
-            case 3 -> handleSearchBookByISBN();
-            case 4 -> handleSearchBookByGenre();
+            case 1 -> getBookByName();
+            case 2 -> getBookByAuthor();
+            case 3 -> getBookByISBN();
+            case 4 -> getBookByGenre();
         }
     }
 
-    private void handleSearchBookByName() throws IOException {
-        String name = inStream.readLine();
-        List<Book> books = borrowerService.searchBooksByName(name);
+    private void getBookByName() throws IOException {
+        String name = inputStream.readLine();
+        List<Book> books = borrowerService.getBooksByName(name);
         sendBooks(books);
     }
 
-    private void handleSearchBookByAuthor() throws IOException {
-        String author = inStream.readLine();
-        List<Book> books = borrowerService.searchBooksByAuthor(author);
+    private void getBookByAuthor() throws IOException {
+        String author = inputStream.readLine();
+        List<Book> books = borrowerService.getBooksByAuthor(author);
         sendBooks(books);
     }
 
-    private void handleSearchBookByISBN() throws IOException {
-        String ISBN = inStream.readLine();
+    private void getBookByISBN() throws IOException {
+        String ISBN = inputStream.readLine();
         Book book = borrowerService.getBookByISBN(ISBN);
         if (book != null) {
-            outStream.println(book);
+            outputStream.println(book);
         } else {
-            outStream.println("Book not found with ISBN: " + ISBN);
+            outputStream.println("Book not found with ISBN: " + ISBN);
         }
-        outStream.println("end");
+        outputStream.println("end");
     }
 
-    private void handleSearchBookByGenre() throws IOException {
-        String genre = inStream.readLine();
+    private void getBookByGenre() throws IOException {
+        String genre = inputStream.readLine();
         List<Book> books = borrowerService.getBooksByGenre(genre);
         sendBooks(books);
     }
@@ -117,12 +116,12 @@ public class BorrowerView {
     private void sendBooks(List<Book> books) {
         if (books != null && !books.isEmpty()) {
             for (Book book : books) {
-                outStream.println(book);
+                outputStream.println(book);
             }
         } else {
-            outStream.println("No books found.");
+            outputStream.println("No books found.");
         }
-        outStream.println("end");
+        outputStream.println("end");
     }
 
     private void viewBooks() {
@@ -133,12 +132,12 @@ public class BorrowerView {
     private void getBorrowedBooks() {
         List<BorrowedBook> borrowedBooks = borrowerService.getBorrowedBooks();
         if (borrowedBooks.isEmpty()) {
-            outStream.println("You have not borrowed any books.");
+            outputStream.println("You have not borrowed any books.");
         } else {
             for (BorrowedBook book : borrowedBooks) {
-                outStream.println(book);
+                outputStream.println(book);
             }
         }
-        outStream.println("end");
+        outputStream.println("end");
     }
 }

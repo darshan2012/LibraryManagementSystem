@@ -9,12 +9,12 @@ import java.net.SocketException;
 
 public class LMS {
     private static LMS lms;
-    private PrintWriter outStream;
-    private BufferedReader inStream;
+    private PrintWriter outputStream;
+    private BufferedReader inputStream;
 
-    public LMS(PrintWriter outStream, BufferedReader inStream) {
-        this.outStream = outStream;
-        this.inStream = inStream;
+    public LMS(PrintWriter outputStream, BufferedReader inputStream) {
+        this.outputStream = outputStream;
+        this.inputStream = inputStream;
 
     }
     public void start(){
@@ -23,7 +23,7 @@ public class LMS {
 
             try{
                 do{
-                choice = Integer.parseInt(inStream.readLine());
+                choice = Integer.parseInt(inputStream.readLine());
 
                 switch (choice){
                     case 1 -> login();
@@ -34,31 +34,31 @@ public class LMS {
                 }
                 }while(choice != 3);
             }
-            catch (SocketException e)
+            catch (SocketException exception)
             {
                 System.out.println("client Exited...");
             }
-            catch (Exception e){
-                System.err.println(e.getMessage());
-                outStream.println("Invalid choice!");
+            catch (Exception exception){
+                System.err.println(exception.getMessage());
+                outputStream.println("Invalid choice!");
             }
 
     }
 
     private void adminLogin() throws SocketException {
-        new AdminView(outStream,inStream).operations();
+        new AdminView(outputStream,inputStream).operations();
     }
 
     private void register() {
         try {
-            if(AuthenticationService.registerUser(inStream.readLine(), inStream.readLine(), inStream.readLine())) {
-                outStream.println("Registered");
+            if(AuthenticationService.registerUser(inputStream.readLine(), inputStream.readLine(), inputStream.readLine())) {
+                outputStream.println("Registered");
             } else {
-                outStream.println("Registration Failed");
+                outputStream.println("Registration Failed");
             }
-        } catch (Exception e) {
-            System.err.println("\nCould not Register: " + e.getMessage());
-            outStream.println("Error: " + e.getMessage());
+        } catch (Exception exception) {
+            System.err.println("\nCould not Register: " + exception.getMessage());
+            outputStream.println("Error: " + exception.getMessage());
         }
     }
 
@@ -66,15 +66,15 @@ public class LMS {
     private void login() {
         try {
 
-            Borrower user = AuthenticationService.signIn(inStream.readLine(),inStream.readLine());
+            Borrower user = AuthenticationService.signIn(inputStream.readLine(),inputStream.readLine());
             if(user != null)
             {
-                outStream.println("Authenticated");
+                outputStream.println("Authenticated");
             }
-            new BorrowerView(user,outStream,inStream).operations();
-        }catch (Exception e){
-            System.err.println("\nCould not login: " + e.getMessage());
-            outStream.println(e.getMessage());
+            new BorrowerView(user,outputStream,inputStream).operations();
+        }catch (Exception exception){
+            System.err.println("\nCould not login: " + exception.getMessage());
+            outputStream.println(exception.getMessage());
         }
     }
 }

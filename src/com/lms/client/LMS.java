@@ -12,15 +12,15 @@ import java.net.SocketException;
 public class LMS {
     private BufferedReader inputReader;
     private Socket socket;
-    private PrintWriter outStream;
-    private BufferedReader inStream;
+    private PrintWriter outputStream;
+    private BufferedReader inputStream;
 
     public LMS(String host, int port) throws IOException {
         inputReader = new BufferedReader(new InputStreamReader(System.in));
         socket = new Socket(host, port);
-        outStream = new PrintWriter(socket.getOutputStream(), true);
-        inStream = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        System.out.println(inStream.readLine());
+        outputStream = new PrintWriter(socket.getOutputStream(), true);
+        inputStream = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        System.out.println(inputStream.readLine());
     }
 
     public void authChoices() {
@@ -47,7 +47,7 @@ public class LMS {
                 authChoices();
                 System.out.print("Enter your choice: ");
                 choice = Integer.parseInt(inputReader.readLine());
-                outStream.println(choice);
+                outputStream.println(choice);
                 switch (choice) {
                     case 1 -> login();
                     case 2 -> register();
@@ -55,18 +55,18 @@ public class LMS {
                     case 3 -> System.out.println("Exiting...");
                     default -> System.err.println("Invalid choice!");
                 }
-            } catch (SocketException e) {
-                System.out.println("Socket Exception.." + e.getMessage());
+            } catch (SocketException exception) {
+                System.out.println("Socket Exception.." + exception.getMessage());
                 break;
-            } catch (Exception e) {
+            } catch (Exception exception) {
                 System.err.println("Invalid choice!");
             }
         } while (choice != 3);
 
         try {
             socket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException exception) {
+            exception.printStackTrace();
         }
     }
 
@@ -74,22 +74,22 @@ public class LMS {
         try {
             System.out.print("Enter username: ");
             String username = inputReader.readLine();
-            outStream.println(username);
+            outputStream.println(username);
             System.out.print("Enter password: ");
             String password = inputReader.readLine();
-            outStream.println(password);
+            outputStream.println(password);
 
-            String response = inStream.readLine();
+            String response = inputStream.readLine();
             if (response.equals("Authenticated")) {
                 System.out.println("\n\tLogin Successful!");
                 Borrower borrower = new Borrower(username, password);
-                BorrowerView borrowerView = new BorrowerView(borrower, outStream, inStream,inputReader);
+                BorrowerView borrowerView = new BorrowerView(borrower, outputStream, inputStream,inputReader);
                 borrowerView.operations();
             } else {
                 System.err.println("Authentication failed! " + response);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException exception) {
+            exception.printStackTrace();
         }
     }
 
@@ -97,22 +97,22 @@ public class LMS {
         try {
             System.out.print("Enter username: ");
             String username = inputReader.readLine();
-            outStream.println(username);
+            outputStream.println(username);
             System.out.print("Enter password: ");
             String password = inputReader.readLine();
-            outStream.println(password);
+            outputStream.println(password);
             System.out.print("Enter name: ");
             String name = inputReader.readLine();
-            outStream.println(name);
+            outputStream.println(name);
 
-            String response = inStream.readLine();
+            String response = inputStream.readLine();
             if (response.equals("Registered")) {
                 System.out.println("Registration Successful! Please login.");
             } else {
                 System.err.println("Registration failed! : " + response);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException exception) {
+            exception.printStackTrace();
         }
     }
 
@@ -120,7 +120,7 @@ public class LMS {
 
         String response = "Authenticated";
         if (response.equals("Authenticated")) {
-            AdminView adminView = new AdminView(inStream, outStream,inputReader);
+            AdminView adminView = new AdminView(inputStream, outputStream,inputReader);
             adminView.operations();
         } else {
             System.err.println("Authentication failed! : " + response);
@@ -131,8 +131,8 @@ public class LMS {
         try {
             LMS lms = new LMS("localhost", 6666);
             lms.start();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException exception) {
+            exception.printStackTrace();
         }
     }
 }

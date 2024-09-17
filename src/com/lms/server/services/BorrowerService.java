@@ -19,6 +19,7 @@ public class BorrowerService extends LibUserService {
     public static int MAX_HOLD_DAYS = 14;
     public static long PENALTY_PER_DAY = 10;
     public static PenaltyCalculator penaltyCalculator;
+
     static {
         penaltyCalculator = (issueDate, dueDate) -> {
             long penalty = (Duration.between(issueDate,dueDate).toDays() - MAX_HOLD_DAYS) * PENALTY_PER_DAY;
