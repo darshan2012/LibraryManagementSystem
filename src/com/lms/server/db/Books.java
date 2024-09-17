@@ -10,6 +10,7 @@
 
     public class Books {
         private final static Map<String, Book> books = new ConcurrentHashMap<>();
+
         static {
             // Adding dummy data
             addBook("1234567890", "The Great Gatsby", "F. Scott Fitzgerald", "Fiction");

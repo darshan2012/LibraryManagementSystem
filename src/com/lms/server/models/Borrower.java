@@ -22,6 +22,7 @@ public class Borrower extends User {
     public void addBookToBorrowedBook(BorrowedBook book){
         borrowedBooks.add(book);
     }
+
     public void removeBookFromBorrow(BorrowedBook BorrowedBook){
         borrowedBooks.remove(BorrowedBook);
     }
@@ -37,6 +38,7 @@ public class Borrower extends User {
         }
         borrowedBooks.remove(ind);
     }
+
     public void setBorrowedBooks(List<BorrowedBook> borrowedBooks) {
         this.borrowedBooks = borrowedBooks;
     }
