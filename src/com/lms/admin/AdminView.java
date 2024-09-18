@@ -1,4 +1,4 @@
-package com.lms.client;
+package com.lms.admin;
 
 import java.io.BufferedReader;
 import java.io.IOException;

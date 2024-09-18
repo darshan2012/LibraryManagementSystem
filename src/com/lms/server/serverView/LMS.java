@@ -4,6 +4,7 @@ import com.lms.server.models.Borrower;
 import com.lms.server.services.AuthenticationService;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.SocketException;
 
@@ -46,7 +47,22 @@ public class LMS {
     }
 
     private void adminLogin() throws SocketException {
-        new AdminView(outputStream,inputStream).operations();
+        try
+        {
+            if(inputStream.readLine().equals("admin") && inputStream.readLine().equals("admin"))
+            {
+                outputStream.println("Authenticated");
+                new AdminView(outputStream,inputStream).operations();
+            }
+            else {
+                outputStream.println("Invalid login details");
+            }
+
+        } catch (Exception exception)
+        {
+            System.err.println("\nCould not login: " + exception.getMessage());
+            outputStream.println(exception.getMessage());
+        }
     }
 
     private void register() {

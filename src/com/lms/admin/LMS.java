@@ -1,6 +1,6 @@
-package com.lms.client;
+package com.lms.admin;
 
-import com.lms.admin.AdminView;
+import com.lms.client.BorrowerView;
 import com.lms.server.models.Borrower;
 
 import java.io.BufferedReader;
@@ -10,7 +10,8 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
 
-public class LMS {
+public class LMS
+{
     private BufferedReader inputReader;
     private Socket socket;
     private PrintWriter outputStream;
@@ -25,7 +26,7 @@ public class LMS {
     }
 
     public void authChoices() {
-        System.out.println("\n1. Login\n2. Registration\n3. Exit\n");
+        System.out.println("\n1. Login\n2. Exit\n");
     }
 
     private void displayHomeHeader() {
@@ -48,16 +49,17 @@ public class LMS {
                 authChoices();
                 System.out.print("Enter your choice: ");
                 choice = Integer.parseInt(inputReader.readLine());
+                if(choice == 2)
+                {
+                    choice = 3;
+                }else if(choice == 1)
+                    choice = 555;
                 outputStream.println(choice);
                 switch (choice) {
-                    case 1 -> login();
-                    case 2 -> register();
+                    case 555 -> adminLogin();
                     case 3 -> System.out.println("Exiting...");
                     default -> System.err.println("Invalid choice!");
                 }
-            } catch (SocketException exception) {
-                System.out.println("Socket Exception.." + exception.getMessage());
-                break;
             } catch (Exception exception) {
                 System.err.println("Invalid choice!");
             }
@@ -70,50 +72,27 @@ public class LMS {
         }
     }
 
-    private void login() {
-        try {
+    private void adminLogin() {
+        try
+        {
             System.out.print("Enter username: ");
             String username = inputReader.readLine();
             outputStream.println(username);
             System.out.print("Enter password: ");
             String password = inputReader.readLine();
             outputStream.println(password);
-
             String response = inputStream.readLine();
             if (response.equals("Authenticated")) {
-                System.out.println("\n\tLogin Successful!");
-                Borrower borrower = new Borrower(username, password);
-                BorrowerView borrowerView = new BorrowerView(borrower, outputStream, inputStream,inputReader);
-                borrowerView.operations();
+                AdminView adminView = new AdminView(inputStream, outputStream,inputReader);
+                adminView.operations();
             } else {
-                System.err.println("Authentication failed! " + response);
+                System.err.println("Authentication failed! : " + response);
             }
-        } catch (IOException exception) {
-            exception.printStackTrace();
+        } catch (Exception exception)
+        {
+            System.err.println("Could not login");
         }
-    }
 
-    private void register() {
-        try {
-            System.out.print("Enter username: ");
-            String username = inputReader.readLine();
-            outputStream.println(username);
-            System.out.print("Enter password: ");
-            String password = inputReader.readLine();
-            outputStream.println(password);
-            System.out.print("Enter name: ");
-            String name = inputReader.readLine();
-            outputStream.println(name);
-
-            String response = inputStream.readLine();
-            if (response.equals("Registered")) {
-                System.out.println("Registration Successful! Please login.");
-            } else {
-                System.err.println("Registration failed! : " + response);
-            }
-        } catch (IOException exception) {
-            exception.printStackTrace();
-        }
     }
 
     public static void main(String[] args) {
